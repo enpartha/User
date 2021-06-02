@@ -54,9 +54,12 @@ class _MyAppState extends State<MyApp> {
               ),
               Container(
                 child: ListTile(
-                  leading: Icon(
-                    Icons.account_circle,
-                    color: Colors.green,
+                  leading: Padding(
+                    padding: const EdgeInsets.only(top:15.0),
+                    child: Icon(
+                      Icons.account_circle,
+                      color: Colors.green,
+                    ),
                   ),
                   title: TextFormField(
                     decoration: InputDecoration(
@@ -71,9 +74,12 @@ class _MyAppState extends State<MyApp> {
               ),
               Container(
                 child: ListTile(
-                  leading: Icon(
-                    Icons.local_hospital,
-                    color: Colors.green,
+                  leading: Padding(
+                    padding: const EdgeInsets.only(top:15.0),
+                    child: Icon(
+                      Icons.local_hospital,
+                      color: Colors.green,
+                    ),
                   ),
                   title: TextFormField(
                     decoration: InputDecoration(
