@@ -1,10 +1,9 @@
-import 'package:flutter/cupertino.dart';
+// import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 //import 'package:intl/date_symbol_data_file.dart';
 //import 'package:intl/date_symbol_data_http_request.dart';
 import 'package:intl/intl.dart';
-import 'package:profile/device_size.dart';
 
 void main() {
   runApp(MyApp());
@@ -16,12 +15,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String valueChoose;
+  Object? valueChoose;
   String _selectdate = "Use the button to choose the date";
-  List listItem = ["Item1", "Item2", 'Item3', "Item4"];
+  List listItem = ['Nurse', 'Nursing Incharge', 'Supervisor'];
+  Color _iconColor = Colors.blue;
 
   Future<Null> _openDatePicker(BuildContext context) async {
-    final DateTime d = await showDatePicker(
+    final DateTime? d = await showDatePicker(
         context: context,
         initialDate: DateTime.now(),
         firstDate: DateTime(1947),
@@ -37,11 +37,14 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
+        appBar: AppBar(
+          title: Text('Profile'),
+        ),
         body: SafeArea(
-            child: Container(
+            child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
-              SizedBox(height: 10),
+              // SizedBox(height: 10),
               Padding(
                 padding: const EdgeInsets.only(top: 25),
                 child: Center(
@@ -52,108 +55,106 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
               ),
-              Container(
-                child: ListTile(
-                  leading: Padding(
-                    padding: const EdgeInsets.only(top:15.0),
-                    child: Icon(
-                      Icons.account_circle,
-                      color: Colors.green,
-                    ),
-                  ),
-                  title: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "Name",
-                    ),
-                  ),
-                  trailing: Icon(Icons.edit),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Container(
-                child: ListTile(
-                  leading: Padding(
-                    padding: const EdgeInsets.only(top:15.0),
-                    child: Icon(
-                      Icons.local_hospital,
-                      color: Colors.green,
-                    ),
-                  ),
-                  title: TextFormField(
-                    decoration: InputDecoration(
-                      labelText: "Hospital Name",
-                    ),
-                  ),
-                  trailing: Icon(Icons.edit),
-                ),
-              ),
-              SizedBox(
-                height: 10,
-              ),
-              Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Container(
-                  padding: EdgeInsets.only(left: 50.0, right: 50.0),
-                  child: DropdownButton(
-                    isExpanded: true,
-                    dropdownColor: Colors.white,
-                    icon: Icon(Icons.arrow_drop_down),
-                    hint: Text("Role/Designation"),
-                    value: valueChoose,
-                    onChanged: (newValue) {
-                      setState(() {
-                        valueChoose = newValue;
-                      });
-                    },
-                    items: listItem.map((valueItem) {
-                      return DropdownMenuItem(
-                        value: valueItem,
-                        child: Text(valueItem),
-                      );
-                    }).toList(),
+              ListTile(
+                leading: Container(
+                  height: double.infinity,
+                  child: Icon(
+                    Icons.account_circle,
+                    color: _iconColor,
+                    size: 30,
                   ),
                 ),
+                title: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "Name",
+                  ),
+                  initialValue: 'User Name',
+                ),
+                // trailing: Icon(Icons.edit),
               ),
-              Container(
-                child: ListTile(
-                  leading: Icon(
+
+              ListTile(
+                leading: Container(
+                  height: double.infinity,
+                  child: Icon(
+                    Icons.local_hospital,
+                    color: _iconColor,
+                    size: 30,
+                  ),
+                ),
+                title: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "Hospital Name",
+                  ),
+                ),
+                // trailing: Icon(Icons.edit),
+              ),
+              // SizedBox(
+              //   height: 10,
+              // ),
+              ListTile(
+                leading: Container(
+                  height: double.infinity,
+                  child: Icon(
+                    Icons.supervisor_account,
+                    color: _iconColor,
+                    size: 40,
+                  ),
+                ),
+                title: DropdownButton(
+                  isExpanded: true,
+                  dropdownColor: Colors.white,
+                  // icon: Icon(Icons.arrow_drop_down),
+                  hint: Text("Role/Designation"),
+                  value: valueChoose,
+                  onChanged: (newValue) {
+                    setState(() {
+                      valueChoose = newValue;
+                    });
+                  },
+                  items: listItem.map((valueItem) {
+                    return DropdownMenuItem(
+                      value: valueItem,
+                      child: Text(valueItem),
+                    );
+                  }).toList(),
+                ),
+              ),
+              ListTile(
+                leading: Container(
+                  height: double.infinity,
+                  child: Icon(
                     Icons.work,
-                    color: Colors.green,
-                  ),
-                  title: Padding(
-                    padding: const EdgeInsets.only(right: 32.0),
-                    child: TextFormField(
-                      decoration: InputDecoration(
-                        labelText: "Years Of Experience",
-                      ),
-                      keyboardType: TextInputType.number,
-                      inputFormatters: <TextInputFormatter>[
-                        FilteringTextInputFormatter.digitsOnly
-                      ],
-                    ),
+                    color: _iconColor,
+                    size: 30,
                   ),
                 ),
-              ),
-              SizedBox(height: 15),
-              Container(
-                child: ListTile(
-                  leading: Icon(
-                    Icons.verified_user,
-                    color: Colors.green,
+                title: TextFormField(
+                  decoration: InputDecoration(
+                    labelText: "Years Of Experience",
                   ),
-                  title: Container(
-                    margin: EdgeInsets.only(right: 230),
-                    width: 50,
-                    height: 45,
-                    decoration: BoxDecoration(
-                        color: Colors.white,
-                        boxShadow: [BoxShadow(color: Colors.black)],
-                        borderRadius: BorderRadius.circular(8.0)),
-                    child: Text(
-                      " UserId",
-                    ),
+                  keyboardType: TextInputType.number,
+                  inputFormatters: <TextInputFormatter>[
+                    FilteringTextInputFormatter.digitsOnly
+                  ],
+                ),
+              ),
+              // SizedBox(height: 15),
+              ListTile(
+                leading: Icon(
+                  Icons.verified_user,
+                  color: _iconColor,
+                ),
+                title: Container(
+                  margin: EdgeInsets.only(right: 230),
+                  width: 50,
+                  height: 45,
+                  decoration: BoxDecoration(
+                      color: Colors.white,
+                      boxShadow: [BoxShadow(color: Colors.black)],
+                      borderRadius: BorderRadius.circular(8.0)),
+                  child: Text(
+                    " UserId",
                   ),
                 ),
               ),
@@ -161,7 +162,7 @@ class _MyAppState extends State<MyApp> {
               //   child: ListTile(
               //     leading: Icon(
               //       Icons.calendar_today,
-              //       color: Colors.green,
+              //       color: _iconColor,
               //     ),
               //     title: Text(_selectdate),
               //     trailing: Builder(
@@ -181,7 +182,7 @@ class _MyAppState extends State<MyApp> {
               ListTile(
                 leading: Icon(
                   Icons.calendar_today,
-                  color: Colors.green,
+                  color: _iconColor,
                 ),
                 title: Text(
                   "Date of Birth =>",
