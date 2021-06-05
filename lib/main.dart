@@ -16,19 +16,27 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Object? valueChoose;
-  String _selectdate = "Use the button to choose the date";
+  String _selectdate = "Use the Icon to choose the date";
   List listItem = ['Nurse', 'Nursing Incharge', 'Supervisor'];
   Color _iconColor = Colors.blue;
+  DateTime _date = DateTime.now();
+  TextEditingController _textEditingController = TextEditingController();
+
+  void dateshower() {
+    _openDatePicker(context);
+    _textEditingController.text = DateFormat('yyyy/MM/dd').format(_date);
+    setState(() {});
+  }
 
   Future<Null> _openDatePicker(BuildContext context) async {
     final DateTime? d = await showDatePicker(
         context: context,
-        initialDate: DateTime.now(),
+        initialDate: _date,
         firstDate: DateTime(1947),
         lastDate: DateTime(2050));
     if (d != null) {
       setState(() {
-        _selectdate = new DateFormat.yMEd("en_US").format(d).toString();
+        _selectdate = new DateFormat.yMd("en_US").format(d).toString();
       });
     }
   }
@@ -158,49 +166,26 @@ class _MyAppState extends State<MyApp> {
                   ),
                 ),
               ),
-              // Container(
-              //   child: ListTile(
-              //     leading: Icon(
-              //       Icons.calendar_today,
-              //       color: _iconColor,
-              //     ),
-              //     title: Text(_selectdate),
-              //     trailing: Builder(
-              //       builder: (context) {
-              //         return IconButton(
-              //             icon: Icon(Icons.calendar_view_day),
-              //             onPressed: () {
-              //               _openDatePicker(context);
-              //             });
-              //       },
-              //     ),
-              //   ),
-              // )
+
               SizedBox(
                 height: 10,
               ),
+
               ListTile(
                 leading: Icon(
                   Icons.calendar_today,
                   color: _iconColor,
                 ),
-                title: Text(
-                  "Date of Birth =>",
-                  style: TextStyle(fontSize: 15),
-                ),
-                trailing: Column(
-                  children: <Widget>[
-                    Padding(padding: EdgeInsets.only(left: 50.0)),
-                    Builder(builder: (context) {
-                      return RaisedButton(
-                          child: Text(_selectdate),
-                          onPressed: () {
-                            _openDatePicker(context);
-                          });
-                    })
-                  ],
-                ),
-              )
+                title: Builder(builder: (context) {
+                  return GestureDetector(
+                    child: Builder(builder: (context) {
+                      return TextFormField(
+                        onTap: () => dateshower(),
+                      );
+                    }),
+                  );
+                }),
+              ),
             ],
           ),
         )),
