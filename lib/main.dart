@@ -19,27 +19,9 @@ class _MyAppState extends State<MyApp> {
   String _selectdate = "Use the Icon to choose the date";
   List listItem = ['Nurse', 'Nursing Incharge', 'Supervisor'];
   Color _iconColor = Colors.blue;
-  DateTime _date = DateTime.now();
+  DateTime date = DateTime.now();
   TextEditingController _textEditingController = TextEditingController();
 
-  void dateshower() {
-    _openDatePicker(context);
-    _textEditingController.text = DateFormat('yyyy/MM/dd').format(_date);
-    setState(() {});
-  }
-
-  Future<Null> _openDatePicker(BuildContext context) async {
-    final DateTime? d = await showDatePicker(
-        context: context,
-        initialDate: _date,
-        firstDate: DateTime(1947),
-        lastDate: DateTime(2050));
-    if (d != null) {
-      setState(() {
-        _selectdate = new DateFormat.yMd("en_US").format(d).toString();
-      });
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -173,18 +155,22 @@ class _MyAppState extends State<MyApp> {
 
               ListTile(
                 leading: Icon(
-                  Icons.calendar_today,
-                  color: _iconColor,
+                    Icons.calendar_today,
+                    color: _iconColor
                 ),
-                title: Builder(builder: (context) {
-                  return GestureDetector(
-                    child: Builder(builder: (context) {
-                      return TextFormField(
-                        onTap: () => dateshower(),
-                      );
-                    }),
-                  );
-                }),
+                title: InputDatePickerFormField(
+                  initialDate: DateTime.now(),
+                  fieldLabelText: "Date",
+                  firstDate: DateTime(DateTime.now().year-5),
+                  lastDate: DateTime(DateTime.now().year+5),
+                  //initialDate: currentDate,
+                  onDateSubmitted: (value){
+                    setState(() {
+                      date = value; // This is the final Date
+                    });
+                  },
+
+                ),
               ),
             ],
           ),
