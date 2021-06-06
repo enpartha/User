@@ -6,7 +6,9 @@ import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
 
 void main() {
-  runApp(MyApp());
+  runApp(MaterialApp(
+    home: MyApp(),
+  ));
 }
 
 class MyApp extends StatefulWidget {
@@ -16,40 +18,43 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   Object? valueChoose;
-  String _selectdate = "Use the Icon to choose the date";
+
+  //String _selectdate = "Use the Icon to choose the date";
   List listItem = ['Nurse', 'Nursing Incharge', 'Supervisor'];
   Color _iconColor = Colors.blue;
-  DateTime _date = DateTime.now();
+  // final _formKey = GlobalKey<FormState>();
+  DateTime selectedDate = DateTime.now();
   TextEditingController _textEditingController = TextEditingController();
 
-  void dateshower() {
-    _openDatePicker(context);
-    _textEditingController.text = DateFormat('yyyy/MM/dd').format(_date);
-    setState(() {});
-  }
+  // void dateshower() {
+  //   _openDatePicker(context);
+  //   _textEditingController.text = DateFormat('yyyy/MM/dd').format(date);
+  // }
 
-  Future<Null> _openDatePicker(BuildContext context) async {
-    final DateTime? d = await showDatePicker(
+  _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
         context: context,
-        initialDate: _date,
+        initialDate: selectedDate,
         firstDate: DateTime(1947),
         lastDate: DateTime(2050));
-    if (d != null) {
+    if (picked != null && picked != selectedDate) {
       setState(() {
-        _selectdate = new DateFormat.yMd("en_US").format(d).toString();
+        selectedDate = picked;
+        var date =
+            "${picked.toLocal().day}/${picked.toLocal().month}/${picked.toLocal().year}";
+        _textEditingController.text = date;
       });
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        appBar: AppBar(
-          title: Text('Profile'),
-        ),
-        body: SafeArea(
-            child: SingleChildScrollView(
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
+      body: SafeArea(
+        child: SingleChildScrollView(
           child: Column(
             children: <Widget>[
               // SizedBox(height: 10),
@@ -170,25 +175,27 @@ class _MyAppState extends State<MyApp> {
               SizedBox(
                 height: 10,
               ),
-
               ListTile(
-                leading: Icon(
-                  Icons.calendar_today,
-                  color: _iconColor,
+                leading: Container(
+                  height: double.infinity,
+                  child: Icon(
+                    Icons.calendar_today,
+                    color: Colors.blue,
+                  ),
                 ),
-                title: Builder(builder: (context) {
-                  return GestureDetector(
-                    child: Builder(builder: (context) {
-                      return TextFormField(
-                        onTap: () => dateshower(),
-                      );
-                    }),
-                  );
-                }),
-              ),
+                title: GestureDetector(
+                  child: TextFormField(
+                    onTap: () => _selectDate(context),
+                    controller: _textEditingController,
+                    decoration: InputDecoration(
+                      labelText: "Date",
+                    ),
+                  ),
+                ),
+              )
             ],
           ),
-        )),
+        ),
       ),
     );
   }
