@@ -47,6 +47,9 @@ class _MyAppState extends State<MyApp> {
     }
   }
 
+  //Edit model
+  void _myclass() {}
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
